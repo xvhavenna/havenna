@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Havenna</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b141a;
+            min-height: 100vh;
+            min-height: 100dvh;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* ========== WELCOME SCREEN ========== */
+        .welcome-container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('imagens/havenna.png');
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px) brightness(0.4);
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .welcome-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(11,20,26,0.3) 0%, rgba(11,20,26,0.9) 100%);
+            z-index: 2;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 3;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .welcome-avatar-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .welcome-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #00a884;
+            box-shadow: 0 8px 32px rgba(0, 168, 132, 0.3);
+        }
+
+        .welcome-online-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background-color: #00a884;
+            border-radius: 50%;
+            border: 3px solid #0b141a;
+        }
+
+        .welcome-name {
+            color: #e9edef;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .welcome-status {
+            color: #00a884;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .welcome-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: #00a884;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .welcome-bio {
+            color: #8696a0;
+            font-size: 14px;
+            max-width: 280px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .welcome-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-stat {
+            text-align: center;
+        }
+
+        .welcome-stat-number {
+            color: #e9edef;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .welcome-stat-label {
+            color: #8696a0;
+            font-size: 12px;
+        }
+
+        .welcome-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background-color: #00a884;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 168, 132, 0.4);
+        }
+
+        .welcome-btn:hover {
+            background-color: #25d366;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 168, 132, 0.5);
+        }
+
+        .welcome-btn:active {
+            transform: translateY(0);
+        }
+
+        .welcome-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .welcome-footer {
+            position: relative;
+            z-index: 3;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .welcome-encrypted {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #8696a0;
+            font-size: 12px;
+        }
+
+        .welcome-encrypted svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ========== CHAT STYLES ========== */
+        .chat-container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            height: 100dvh;
+            background-color: #0b141a;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #202c33;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #2a3942;
+            flex-shrink: 0;
+        }
+
+        .chat-header-back {
+            color: #00a884;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-header-back svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .chat-header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-header-info {
+            flex: 1;
+        }
+
+        .chat-header-info h2 {
+            color: #e9edef;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .chat-header-info span {
+            color: #00a884;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-header-info span::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: #00a884;
+            border-radius: 50%;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            gap: 15px;
+            color: #8696a0;
+        }
+
+        .chat-header-actions svg {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            background-color: #0b141a;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23202c33' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: messageIn 0.4s ease forwards;
+        }
+
+        @keyframes messageIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            max-width: 75%;
+        }
+
+        .message-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #25d366;
+        }
+
+        .message-bubble {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #8696a0;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .message.received .message-bubble {
+            background-color: #202c33;
+            color: #e9edef;
+            border-top-left-radius: 0;
+        }
+
+        .message.received .message-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -8px;
+            border-width: 0 8px 8px 0;
+            border-style: solid;
+            border-color: transparent #202c33 transparent transparent;
+        }
+
+        .message.sent {
+            flex-direction: row-reverse;
+        }
+
+        .message.sent .message-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .message.sent .message-name {
+            color: #53bdeb;
+        }
+
+        .message.sent .message-bubble {
+            background-color: #005c4b;
+            color: #e9edef;
+            border-top-right-radius: 0;
+        }
+
+        .message.sent .message-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -8px;
+            left: auto;
+            border-width: 0 0 8px 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent #005c4b;
+        }
+
+        .message.no-name .message-name {
+            display: none;
+        }
+
+        .response-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 15px;
+            padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            background-color: #202c33;
+            border-top: 1px solid #2a3942;
+            flex-shrink: 0;
+        }
+
+        .response-options.hidden {
+            display: none;
+        }
+
+        .response-btn {
+            padding: 10px 16px;
+            background-color: #00a884;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .response-btn:hover {
+            background-color: #25d366;
+            transform: scale(1.02);
+        }
+
+        .response-btn:active {
+            transform: scale(0.98);
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .typing-indicator.hidden {
+            display: none;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 10px 14px;
+            background-color: #202c33;
+            border-radius: 8px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background-color: #8696a0;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: 0s; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .chat-messages::-webkit-scrollbar,
+        .gallery-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track,
+        .gallery-content::-webkit-scrollbar-track {
+            background: #0b141a;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb,
+        .gallery-content::-webkit-scrollbar-thumb {
+            background: #374045;
+            border-radius: 3px;
+        }
+
+        /* ========== GALLERY STYLES ========== */
+        .gallery-container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background-color: #0b141a;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-header {
+            background-color: #202c33;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        .gallery-header-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .gallery-header-info h2 {
+            color: #e9edef;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .gallery-header-info span {
+            color: #8696a0;
+            font-size: 13px;
+        }
+
+        .gallery-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            align-content: start;
+        }
+
+        .gallery-item {
+            background-color: #202c33;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .gallery-item-video {
+            position: relative;
+        }
+
+        .gallery-item-video .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .gallery-item-video .play-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #fff;
+            margin-left: 4px;
+        }
+
+        .gallery-item-video video {
+            cursor: pointer;
+        }
+
+        .gallery-item .download-btn {
+            padding: 10px;
+            background-color: #00a884;
+            color: #fff;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .gallery-item .download-btn:hover {
+            background-color: #25d366;
+        }
+
+        .gallery-item .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        .download-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Hide pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 520px) {
+            .chat-container,
+            .gallery-container,
+            .welcome-container {
+                max-width: 100%;
+            }
+
+            .gallery-content {
+                padding: 8px;
+                gap: 8px;
+            }
+
+            .gallery-item .download-btn {
+                padding: 8px;
+                font-size: 11px;
+            }
+
+            .download-icon {
+                width: 14px;
+                height: 14px;
+            }
+
+            .welcome-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .welcome-name {
+                font-size: 24px;
+            }
+
+            .response-options {
+                gap: 6px;
+                padding: 10px 12px;
+                padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .response-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .chat-header {
+                padding: 8px 12px;
+            }
+
+            .chat-header-avatar {
+                width: 35px;
+                height: 35px;
+            }
+
+            .response-options {
+                gap: 5px;
+                padding: 8px 10px;
+            }
+
+            .response-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+                border-radius: 16px;
+            }
+
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+            }
+
+            .chat-messages {
+                padding: 10px;
+                gap: 8px;
+            }
+        }
+
+        @media (min-width: 521px) {
+            body {
+                padding: 20px;
+            }
+            
+            .chat-container,
+            .gallery-container,
+            .welcome-container {
+                height: calc(100vh - 40px);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== TELA DE BOAS-VINDAS ========== -->
+    <div class="page welcome-container active" id="welcomePage">
+        <div class="welcome-bg"></div>
+        <div class="welcome-overlay"></div>
+        
+        <div class="welcome-content">
+            <div class="welcome-avatar-wrapper">
+                <img src="imagens/havenna.png" alt="Havenna" class="welcome-avatar">
+                <div class="welcome-online-badge"></div>
+            </div>
+            
+            <h1 class="welcome-name">Havenna</h1>
+            
+            <div class="welcome-status">Online agora</div>
+            
+            <p class="welcome-bio">Criadora de conteúdo exclusivo. Clique abaixo para iniciar nossa conversa privada.</p>
+            
+            <button class="welcome-btn" onclick="startChat()">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Iniciar Conversa
+            </button>
+        </div>
+        
+        <div class="welcome-footer">
+            <div class="welcome-encrypted">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                Suas mensagens são protegidas
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PÁGINA DO CHAT ========== -->
+    <div class="page chat-container" id="chatPage">
+        <div class="chat-header">
+            <div class="chat-header-back" onclick="goToWelcome()">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </div>
+            <img src="imagens/havenna.png" alt="Havenna" class="chat-header-avatar">
+            <div class="chat-header-info">
+                <h2>Havenna</h2>
+                <span>online</span>
+            </div>
+            <div class="chat-header-actions">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.9 14.3H15l-.3-.3c1-1.1 1.6-2.7 1.6-4.3 0-3.7-3-6.7-6.7-6.7S3 6 3 9.7s3 6.7 6.7 6.7c1.6 0 3.2-.6 4.3-1.6l.3.3v.8l5.1 5.1 1.5-1.5-5-5.2zm-6.2 0c-2.6 0-4.6-2.1-4.6-4.6s2.1-4.6 4.6-4.6 4.6 2.1 4.6 4.6-2 4.6-4.6 4.6z"/>
+                </svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="typing-indicator hidden" id="typingIndicator">
+                <img src="" alt="" class="message-avatar">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="response-options hidden" id="responseOptions">
+            <button class="response-btn" onclick="selectResponse('Fotos 📸')">Fotos 📸</button>
+            <button class="response-btn" onclick="selectResponse('Vídeo 📹')">Vídeo 📹</button>
+            <button class="response-btn" onclick="selectResponse('Tudo 😈')">Tudo 😈</button>
+        </div>
+    </div>
+
+    <!-- ========== PÁGINA DA GALERIA ========== -->
+    <div class="page gallery-container" id="galleryPage">
+        <div class="gallery-header">
+            <img src="imagens/havenna.png" alt="Havenna" class="gallery-header-avatar">
+            <div class="gallery-header-info">
+                <h2>Havenna</h2>
+                <span>Galeria de Fotos</span>
+            </div>
+        </div>
+
+        <div class="gallery-content" id="galleryContent">
+           <!-- FOTO 1 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto1.JPG" alt="Foto 1">
+                <button class="download-btn" onclick="downloadImage('imagens/foto1.JPG', 'foto1.JPG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 1 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video1.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video1.MP4', 'video1.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 2 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto2.JPG" alt="Foto 2">
+                <button class="download-btn" onclick="downloadImage('imagens/foto2.JPG', 'foto2.JPG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 2 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video2.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video2.MP4', 'video2.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 3 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto3.JPG" alt="Foto 3">
+                <button class="download-btn" onclick="downloadImage('imagens/foto3.JPG', 'foto3.JPG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 3 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video3.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video3.MP4', 'video3.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 4 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto4.JPG" alt="Foto 4">
+                <button class="download-btn" onclick="downloadImage('imagens/foto4.JPG', 'foto4.JPG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 4 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video4.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video4.MP4', 'video4.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 5 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto5.PNG" alt="Foto 5">
+                <button class="download-btn" onclick="downloadImage('imagens/foto5.PNG', 'foto5.PNG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 5 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video5.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video5.MP4', 'video5.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 6 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto6.PNG" alt="Foto 6">
+                <button class="download-btn" onclick="downloadImage('imagens/foto6.PNG', 'foto6.PNG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 6 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video6.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video6.MP4', 'video6.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 7 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto7.PNG" alt="Foto 7">
+                <button class="download-btn" onclick="downloadImage('imagens/foto7.PNG', 'foto7.PNG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 7 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video7.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video7.MP4', 'video7.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 8 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto8.PNG" alt="Foto 8">
+                <button class="download-btn" onclick="downloadImage('imagens/foto8.PNG', 'foto8.PNG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 8 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video8.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video8.MP4', 'video8.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- FOTO 9 -->
+            
+            <div class="gallery-item">
+                <img src="imagens/foto9.JPG" alt="Foto 9">
+                <button class="download-btn" onclick="downloadImage('imagens/foto9.JPG', 'foto9.JPG')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+
+            <!-- VÍDEO 9 -->
+            
+            <div class="gallery-item">
+                <div class="gallery-item-video">
+                    <video src="imagens/video9.MP4" onclick="playVideo(this)"></video>
+                    <div class="play-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <button class="download-btn" onclick="downloadImage('imagens/video9.MP4', 'video9.MP4')">
+                    <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Baixar
+                </button>
+            </div>
+            <!-- ADICIONE MAIS FOTOS/VÍDEOS COPIANDO OS BLOCOS ACIMA -->
+        </div>
+    </div>
+
+    <script>
+        // ========== NAVEGAÇÃO ENTRE PÁGINAS ==========
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function startChat() {
+            showPage('chatPage');
+            if (currentStep === 0) {
+                setTimeout(processNextStep, 1000);
+            }
+        }
+
+        function goToWelcome() {
+            showPage('welcomePage');
+        }
+
+        function checkRoute() {
+            const hash = window.location.hash;
+            if (hash === '#galeria') {
+                showPage('galleryPage');
+            } else if (hash === '#chat') {
+                startChat();
+            } else {
+                showPage('welcomePage');
+            }
+        }
+
+        window.addEventListener('hashchange', checkRoute);
+
+        // ========== FUNÇÃO DE DOWNLOAD ==========
+        function downloadImage(imageSrc, fileName) {
+            const link = document.createElement('a');
+            link.href = imageSrc;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ========== FUNÇÃO PLAY VÍDEO ==========
+        function playVideo(videoElement) {
+            const playIcon = videoElement.parentElement.querySelector('.play-icon');
+            
+            if (videoElement.paused) {
+                videoElement.play();
+                playIcon.style.display = 'none';
+            } else {
+                videoElement.pause();
+                playIcon.style.display = 'flex';
+            }
+        }
+
+        // ========== CHAT LOGIC ==========
+        const IMAGENS = {
+            havenna: 'imagens/havenna.png',
+            usuario: 'imagens/usuario.png',
+            foto1: 'imagens/foto1.png'
+        };
+
+        const DELAY_BETWEEN_MESSAGES = 2000;
+        const TYPING_DURATION = 1500;
+
+        let currentStep = 0;
+        let conversationPaused = false;
+
+        const conversationFlow = [
+            {
+                type: 'auto',
+                image: IMAGENS.havenna,
+                name: 'Havenna',
+                text: 'Oi, gostoso! Quer me ver sem roupa? '
+            },
+            {
+                type: 'auto',
+                image: IMAGENS.havenna,
+                name: 'Havenna',
+                text: '<img src="imagens/foto0.JPG" alt="Foto" style="max-width:200px; border-radius:8px;">'
+            },
+            {
+                type: 'auto',
+                image: IMAGENS.havenna,
+                name: 'Havenna',
+                text: 'Você gostou? Que tal umas fotos, vídeos ou tudo! '
+            },
+            {
+                type: 'user-choice',
+                options: ['Fotos 📸', 'Vídeo 📹', 'Tudo 😈']
+            },
+            {
+                type: 'auto',
+                image: IMAGENS.havenna,
+                name: 'Havenna',
+                text: 'Ótima escolha, estou louca para mostrar minha BCT para você! '
+            },
+            {
+                type: 'auto',
+                image: IMAGENS.havenna,
+                name: 'Havenna',
+                text: '<a href="https://t.me/Premium_Havenna_bot" target="_blank" style="display:inline-block; padding:12px 24px; background-color:#00a884; color:#fff; text-decoration:none; border-radius:25px; font-weight:500; margin-top:5px;">Acessar conteúdo exclusivo</a>'
+            }
+        ];
+
+        const chatMessages = document.getElementById('chatMessages');
+        const responseOptions = document.getElementById('responseOptions');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        function createReceivedMessage(image, name, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = name ? 'message received' : 'message received no-name';
+            
+            const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <img src="${image}" alt="${name || ''}" class="message-avatar">
+                <div class="message-content">
+                    ${name ? `<div class="message-name">${name}</div>` : ''}
+                    <div class="message-bubble">
+                        ${text}
+                        <div class="message-time">${time}</div>
+                    </div>
+                </div>
+            `;
+            
+            return messageDiv;
+        }
+
+        function createSentMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message sent';
+            
+            const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <img src="${IMAGENS.usuario}" alt="Usuario" class="message-avatar">
+                <div class="message-content">
+                    <div class="message-name">Você</div>
+                    <div class="message-bubble">
+                        ${text}
+                        <div class="message-time">${time} ✓✓</div>
+                    </div>
+                </div>
+            `;
+            
+            return messageDiv;
+        }
+
+        function showTypingIndicator(image) {
+            const avatarImg = typingIndicator.querySelector('.message-avatar');
+            avatarImg.src = image;
+            typingIndicator.classList.remove('hidden');
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.classList.add('hidden');
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addMessage(messageElement) {
+            chatMessages.insertBefore(messageElement, typingIndicator);
+            scrollToBottom();
+        }
+
+        function showResponseOptions() {
+            responseOptions.classList.remove('hidden');
+        }
+
+        function hideResponseOptions() {
+            responseOptions.classList.add('hidden');
+        }
+
+        function selectResponse(response) {
+            hideResponseOptions();
+            const userMessage = createSentMessage(response);
+            addMessage(userMessage);
+            conversationPaused = false;
+            currentStep++;
+            setTimeout(processNextStep, DELAY_BETWEEN_MESSAGES);
+        }
+
+        function processNextStep() {
+            if (currentStep >= conversationFlow.length || conversationPaused) {
+                return;
+            }
+
+            const step = conversationFlow[currentStep];
+
+            if (step.type === 'auto') {
+                showTypingIndicator(step.image);
+                
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    const message = createReceivedMessage(step.image, step.name, step.text);
+                    addMessage(message);
+                    currentStep++;
+                    setTimeout(processNextStep, DELAY_BETWEEN_MESSAGES);
+                }, TYPING_DURATION);
+                
+            } else if (step.type === 'user-choice') {
+                conversationPaused = true;
+                showResponseOptions();
+            }
+        }
+
+        // Verificar rota inicial
+        checkRoute();
+    </script>
+</body>
+</html>
